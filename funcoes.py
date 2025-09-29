@@ -57,3 +57,22 @@ def disponibilidade():
             conexao.commit()
     except Exception as erro:
         print(f"Algo deu errado! ERRO:{erro}")
+    finally:
+        if conexao:
+            conexao.close()
+
+def remover_livro():
+    conexao_base()
+    try:
+        id_livro = int(input("Digite o id do livro que deseja deletar:"))
+        cursor.execute("DELETE FROM livros WHERE id =?", (id_livro,))
+        conexao.commit()
+        if cursor.rowcount > 0:
+            print("Livro removido com sucesso!")
+        else:
+            print("Nenhum livro cadastrado com o ID fornecido")
+    except Exception as erro:
+        print("Erro ao tentar excluir o livro {erro}")
+    finally:
+        if conexao:
+            conexao.close()
