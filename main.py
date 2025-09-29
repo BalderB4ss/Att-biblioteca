@@ -1,5 +1,45 @@
 import sqlite3
 import funcoes as fnc
-import streamlit as st
+import streamlit as st # Só depois
 
-fnc.remover_livro()
+while True:
+    print("""
+    --------| Biblioteca Online |--------
+        
+    Digite o número da função que deseja:
+
+    1-Listar livros.
+
+    2-Cadastrar livro novo.
+
+    3-Remover livro já existente.
+
+    4-Atualizar disponibilidade do livro.
+
+    5-Sair 
+
+    -------------------------------------
+    """)
+    escolha = int(input("Digite um dos números: "))
+    try:
+        if escolha == 1:
+            fnc.listar_livros()
+
+        elif escolha == 2:
+            fnc.cadastrar_livro()
+
+        elif escolha == 3:
+            fnc.remover_livro()
+
+        elif escolha == 4:
+            fnc.disponibilidade()
+
+        elif escolha == 5:
+            print("Muito obrigado por testar nosso programa!")
+            break   
+    except KeyboardInterrupt:
+        print("Pare de tentar quebrar o código!")
+    except ValueError:
+        print("Por favor digite um número!")
+    except Exception as erro:
+        print(f"Pesso perdão pelo erro! ERRO:{erro}")
