@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS livros(
         print(f"Deu esse erro na conexão: {erro}")
 
 def cadastrar_livro():
+    conexao_base()
     print("Cadastrando livro")
     titulo = input("Digite o nome do livro: ")
     autor = input("Digite o autor do livro: ")
@@ -25,3 +26,9 @@ def cadastrar_livro():
 INSERT INTO livros(titulo,autor,ano,disponivel)
 Values (?,?,?,?)""",(titulo,autor,ano,"Sim"))
     conexao.commit()
+
+def listar_livros():
+    conexao_base()
+    cursor.execute("SELECT * FROM livros")
+    for linha in cursor.fetchall():
+        print(f"ID: {linha[0]} | Título: {linha[1]} | Autor: {linha[2]} | Ano: {linha[3]} | Disponível: {linha[4]}")
