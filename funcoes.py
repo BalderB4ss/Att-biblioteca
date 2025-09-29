@@ -18,20 +18,31 @@ CREATE TABLE IF NOT EXISTS livros(
 
 def cadastrar_livro():
     conexao_base()
-    print("Cadastrando livro")
-    titulo = input("Digite o nome do livro: ")
-    autor = input("Digite o autor do livro: ")
-    ano = input("Digite o ano de lançamento: ")
-    cursor.execute("""
-INSERT INTO livros(titulo,autor,ano,disponivel)
-Values (?,?,?,?)""",(titulo,autor,ano,"Sim"))
-    conexao.commit()
-
+    try:
+        print("Cadastrando livro")
+        titulo = input("Digite o nome do livro: ")
+        autor = input("Digite o autor do livro: ")
+        ano = input("Digite o ano de lançamento: ")
+        cursor.execute("""
+    INSERT INTO livros(titulo,autor,ano,disponivel)
+    Values (?,?,?,?)""",(titulo,autor,ano,"Sim"))
+        conexao.commit()
+    except Exception as erro:
+        print("Erro ao cadastrar livro ERRO:{erro}")
+    finally:
+        if conexao:
+            conexao.close()
 def listar_livros():
     conexao_base()
-    cursor.execute("SELECT * FROM livros")
-    for linha in cursor.fetchall():
-        print(f"ID: {linha[0]} | Título: {linha[1]} | Autor: {linha[2]} | Ano: {linha[3]} | Disponível: {linha[4]}")
+    try:
+        cursor.execute("SELECT * FROM livros")
+        for linha in cursor.fetchall():
+            print(f"ID: {linha[0]} | Título: {linha[1]} | Autor: {linha[2]} | Ano: {linha[3]} | Disponível: {linha[4]}")
+    except Exception as erro:
+        print("Erro ao listar ERRO:{erro}")
+    finally:
+        if conexao:
+            conexao.close()
 
 def disponibilidade():
     conexao_base()
