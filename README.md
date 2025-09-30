@@ -24,12 +24,12 @@ Um simples sistema de gerenciamento de biblioteca feito com **Python** e **SQLit
 
 O banco de dados é criado automaticamente com o nome `biblioteca.db` e contém uma única tabela chamada `livros` com os seguintes campos:
 
-| Campo       | Tipo     | Descrição                        |
-|-------------|----------|----------------------------------|
-| `id`        | INTEGER  | Chave primária, autoincrementada |
-| `titulo`    | TEXT     | Nome do livro                    |
-| `autor`     | TEXT     | Nome do autor                    |
-| `ano`       | INTEGER  | Ano de lançamento                |
+| Campo       | Tipo     | Descrição                                       |
+|-------------|----------|-------------------------------------------------|
+| `id`        | INTEGER  | Chave primária, autoincrementada                |
+| `titulo`    | TEXT     | Nome do livro                                   |
+| `autor`     | TEXT     | Nome do autor                                   |
+| `ano`       | INTEGER  | Ano de lançamento                               |
 | `disponivel`| TEXT     | Indica se o livro está disponível ("Sim"/"Não") |
 
 ---
