@@ -44,8 +44,14 @@ def listar_livros():
     conexao_base()
     try:
         cursor.execute("SELECT * FROM livros")
-        for linha in cursor.fetchall():
-            st.write(f"\nID: {linha[0]} | Título: {linha[1]} | Autor: {linha[2]} | Ano: {linha[3]} | Disponível: {linha[4]}")
+        livros = cursor.fetchall()
+        tabela_livros = {
+            "id": [linha[0] for linha in livros],
+            "titulo": [linha[1] for linha in livros],
+            "autor": [linha[2] for linha in livros],
+            "ano": [linha[3] for linha in livros],
+            "disponivel": [":green[Sim]" if linha [4] == "Sim" else ":red[Não]" for linha in livros]}
+        st.table(tabela_livros, border = "horizontal")
     except Exception as erro:
         st.error("\nErro ao listar | ERRO:{erro}")
     finally:
@@ -66,42 +72,50 @@ def id_livros():
 def disponibilidade():
     conexao_base()
     ids = id_livros()
-    try:    
+    try:
+        if not ids:
+            st.warning("Nenhum livro cadastrado!")
+            return    
         id = st.selectbox("Selecione o id do livro que deseja alterar a disponibilidade.",ids)
-        cursor.execute("""SELECT disponivel FROM livros WHERE id = ?""",(id,))
-        retorno = cursor.fetchone()
-        if retorno[0] == "Sim":
-            cursor.execute("""
-    UPDATE livros
-    SET disponivel = ?
-    WHERE id = ?
-    """,("Não",ids))
-            conexao.commit()
-            st.success("Alteração feita com sucesso!")
-        if retorno[0] == "Não":
-            cursor.execute("""
-    UPDATE livros
-    SET disponivel = ?
-    WHERE disponivel = ?
-    """,("Sim",ids))
-            conexao.commit()
-            st.success("Alteração feita com sucesso!")
+        if st.button("Alterar disponibilidade"):
+            cursor.execute("""SELECT disponivel FROM livros WHERE id = ?""",(id,))
+            retorno = cursor.fetchone()
+            if retorno[0] == "Sim":
+                cursor.execute("""
+        UPDATE livros
+        SET disponivel = ?
+        WHERE id = ?
+        """,("Não",id))
+                conexao.commit()
+                st.success("Alteração feita com sucesso!")
+            elif retorno[0] == "Não":
+                cursor.execute("""
+        UPDATE livros
+        SET disponivel = ?
+        WHERE id = ?
+        """,("Sim",id))
+                conexao.commit()
+                st.success("Alteração feita com sucesso!")
     except Exception as erro:
         st.error(f"\nAlgo deu errado! | ERRO:{erro}")
     finally:
         if conexao:
             conexao.close()
-
 def remover_livro():
     conexao_base()
+    ids = id_livros()
     try:
-        id_livro = int(input("\nDigite o id do livro que deseja deletar:"))
-        cursor.execute("DELETE FROM livros WHERE id =?", (id_livro,))
-        conexao.commit()
-        if cursor.rowcount > 0:
-            st.success("\nLivro removido com sucesso!")
-        else:
-            print("\nNenhum livro cadastrado com o ID fornecido!")
+        if not ids:
+            st.warning("Nenhum livro cadastrado!")
+            return
+        id = st.selectbox("Escolha o id do livro que deseja remover!",ids)
+        if st.button("Remover livro⚠"):
+            cursor.execute("DELETE FROM livros WHERE id =?", (id,))
+            conexao.commit()
+            if cursor.rowcount > 0:
+                st.success("\nLivro removido com sucesso!")
+            else:
+                print("\nNenhum livro cadastrado com o ID fornecido!")
     except Exception as erro:
         st.error("Erro ao tentar excluir o livro {erro}")
     finally:
