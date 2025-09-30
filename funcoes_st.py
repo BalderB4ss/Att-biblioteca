@@ -40,24 +40,28 @@ def cadastrar_livro():
     finally:
         if conexao:
             conexao.close()
+            
 def listar_livros():
     conexao_base()
-    try:
-        cursor.execute("SELECT * FROM livros")
-        livros = cursor.fetchall()
-        tabela_livros = {
-            "id": [linha[0] for linha in livros],
-            "titulo": [linha[1] for linha in livros],
-            "autor": [linha[2] for linha in livros],
-            "ano": [linha[3] for linha in livros],
-            "disponivel": [":green[Sim]" if linha [4] == "Sim" else ":red[Não]" for linha in livros]}
-        st.table(tabela_livros, border = "horizontal")
-    except Exception as erro:
-        st.error("\nErro ao listar | ERRO:{erro}")
-    finally:
-        if conexao:
-            conexao.close()
-
+    cursor.execute("SELECT * FROM livros")
+    livros = cursor.fetchall()
+    if len(livros) > 0:
+        try:
+            tabela_livros = {
+                "id": [linha[0] for linha in livros],
+                "titulo": [linha[1] for linha in livros],
+                "autor": [linha[2] for linha in livros],
+                "ano": [linha[3] for linha in livros],
+                "disponivel": [":green[Sim]" if linha [4] == "Sim" else ":red[Não]" for linha in livros]}
+            st.table(tabela_livros, border = "horizontal")
+        except Exception as erro:
+            st.error("\nErro ao listar | ERRO:{erro}")
+        finally:
+            if conexao:
+                conexao.close()
+    else:
+        st.warning("Nenum livro cadastrado!")
+        return
 def id_livros():
     conexao_base()
     try:
@@ -66,8 +70,6 @@ def id_livros():
         return livros
     except Exception as erro:
         st.error()
-
-
 
 def disponibilidade():
     conexao_base()
