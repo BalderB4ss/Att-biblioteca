@@ -23,13 +23,18 @@ def cadastrar_livro():
     try:
         print("Cadastrando livro!\n")
         titulo = st.text_input("Digite o nome do livro: \n")
-        autor = st.text_input("Digite o autor do livro: \n")
-        ano = st.text_input("Digite o ano de lançamento: \n")
-        cursor.execute("""
-    INSERT INTO livros(titulo,autor,ano,disponivel)
-    Values (?,?,?,?)""",(titulo,autor,ano,"Sim"))
-        conexao.commit()
-        st.success("Sucesso ao cadastrar o livro!")
+        if titulo:
+            autor = st.text_input("Digite o autor do livro: \n")
+            if autor:
+                ano = st.text_input("Digite o ano de lançamento: \n")
+                if ano:
+                    cadastro = st.button("Cadastrar")
+                    if cadastro:
+                        cursor.execute("""
+                INSERT INTO livros(titulo,autor,ano,disponivel)
+                Values (?,?,?,?)""",(titulo,autor,ano,"Sim"))
+                        conexao.commit()
+                        st.success("Sucesso ao cadastrar o livro!")
     except Exception as erro:
         st.error("Erro ao cadastrar livro | ERRO:{erro}")
     finally:
