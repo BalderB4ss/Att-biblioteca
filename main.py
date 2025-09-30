@@ -20,7 +20,7 @@ while True:
 
     -------------------------------------
     """)
-    escolha = int(input("Digite um dos números: "))
+    escolha = int(input("\nDigite um dos números: "))
     try:
         if escolha == 1:
             fnc.listar_livros()
@@ -35,11 +35,11 @@ while True:
             fnc.disponibilidade()
 
         elif escolha == 5:
-            print("Muito obrigado por testar nosso programa!")
+            print("\nMuito obrigado por testar nosso programa\n!")
             break   
     except KeyboardInterrupt:
-        print("Pare de tentar quebrar o código!")
+        print("\nPare de tentar quebrar o código!\n")
     except ValueError:
         print("Por favor digite um número!")
     except Exception as erro:
-        print(f"Pesso perdão pelo erro! ERRO:{erro}")
+        print(f"\nPesso perdão pelo erro! ERRO:{erro}\n")
